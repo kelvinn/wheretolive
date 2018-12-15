@@ -1,0 +1,9 @@
+flask
+GeoAlchemy2
+Flask-SQLAlchemy
+geojson
+Jinja2
+psycopg2
+SQLAlchemy
+shapely
+requests
