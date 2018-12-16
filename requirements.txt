@@ -1,4 +1,3 @@
-bottle
 GeoAlchemy2
 geojson
 psycopg2

@@ -6,23 +6,17 @@ from bottle import route, request, response, template, run
 import calculations
 
 
-@route('/')
-def index():
-    return 'Hi!'
+def handler(event, context):
 
-
-@route('/lookup')
-def lookup():
-
-    lng = request.query.lng
-    lat = request.query.lat
+    lat = event.get('queryStringParameters', {}).get('lat')
+    lng = event.get('queryStringParameters', {}).get('lng')
 
     d = dict(transport=None, schools=None, commute=None)
     d['schools'] = calculations.get_catchment(lat, lng)
     d['transport'] = calculations.near_noisy_transport(lat, lng)
     d['commute'] = calculations.transport_time(lat, lng)
 
-    return json.dumps(d)
+    return {"statusCode": 200, "body": json.dumps(d)}
 
 
 if __name__ == '__main__':
