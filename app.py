@@ -1,8 +1,5 @@
 import json
 
-from os import environ
-
-from bottle import route, request, response, template, run
 import calculations
 
 
@@ -20,7 +17,4 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    if environ.get('APP_LOCATION') == 'heroku':
-        run(host="0.0.0.0", port=int(environ.get("PORT", 5000)))
-    else:
-        run(host='localhost', port=8080, debug=True)
+    pass
