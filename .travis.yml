@@ -8,14 +8,12 @@ cache:
 
 install:
   - pip install -r requirements-test.txt
-  - npm install -g serverless
-  - npm install --save serverless-python-requirements
 
 script:
   - python tests.py
 
 deploy:
   provider: script
-  script: sls deploy
+  script: bash scripts/deploy.sh
   on:
     branch: master
