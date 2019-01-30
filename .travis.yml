@@ -9,7 +9,7 @@ cache:
 install:
   - pip install -r requirements-test.txt
   - npm install -g serverless
-  - npm install -g serverless-python-requirements
+  - npm install --save serverless-python-requirements
 
 script:
   - python tests.py
