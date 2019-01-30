@@ -4,3 +4,5 @@ psycopg2
 SQLAlchemy
 shapely
 requests
+bs4
+googlemaps

@@ -1,6 +1,7 @@
 import json
 
 import calculations
+import scraper
 
 
 def handler(event, context):
@@ -16,5 +17,9 @@ def handler(event, context):
     return {"statusCode": 200, "body": json.dumps(d)}
 
 
+def poll():
+    scraper.run()
+
+
 if __name__ == '__main__':
-    pass
+    poll()

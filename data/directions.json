@@ -1,0 +1,410 @@
+{
+   "geocoded_waypoints" : [
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJtcNkAJGuEmsRsaiWsc_U8Ns",
+         "types" : [ "premise" ]
+      },
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJ6_n85kCuEmsR0eBW__dFWAQ",
+         "types" : [
+            "establishment",
+            "point_of_interest",
+            "train_station",
+            "transit_station"
+         ]
+      }
+   ],
+   "routes" : [
+      {
+         "bounds" : {
+            "northeast" : {
+               "lat" : -33.8298302,
+               "lng" : 151.2227387
+            },
+            "southwest" : {
+               "lat" : -33.8654561,
+               "lng" : 151.2040936
+            }
+         },
+         "copyrights" : "Map data ©2019 Google",
+         "legs" : [
+            {
+               "arrival_time" : {
+                  "text" : "9:51am",
+                  "time_zone" : "Australia/Sydney",
+                  "value" : 1548888706
+               },
+               "departure_time" : {
+                  "text" : "9:30am",
+                  "time_zone" : "Australia/Sydney",
+                  "value" : 1548887435
+               },
+               "distance" : {
+                  "text" : "6.6 km",
+                  "value" : 6587
+               },
+               "duration" : {
+                  "text" : "21 mins",
+                  "value" : 1271
+               },
+               "end_address" : "Wynyard Station, Sydney NSW 2000, Australia",
+               "end_location" : {
+                  "lat" : -33.8652039,
+                  "lng" : 151.2040936
+               },
+               "start_address" : "9 Undercliff St, Neutral Bay NSW 2089, Australia",
+               "start_location" : {
+                  "lat" : -33.8380532,
+                  "lng" : 151.2186591
+               },
+               "steps" : [
+                  {
+                     "distance" : {
+                        "text" : "0.2 km",
+                        "value" : 207
+                     },
+                     "duration" : {
+                        "text" : "3 mins",
+                        "value" : 166
+                     },
+                     "end_location" : {
+                        "lat" : -33.8374625,
+                        "lng" : 151.2169268
+                     },
+                     "html_instructions" : "Walk to Phillips St at Ben Boyd Rd",
+                     "polyline" : {
+                        "points" : "x~omEs{}y[EF}@~@A?A@E?k@IC?CNHlE@P?h@"
+                     },
+                     "start_location" : {
+                        "lat" : -33.8380532,
+                        "lng" : 151.2186591
+                     },
+                     "steps" : [
+                        {
+                           "distance" : {
+                              "text" : "81 m",
+                              "value" : 81
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 70
+                           },
+                           "end_location" : {
+                              "lat" : -33.8374013,
+                              "lng" : 151.2182589
+                           },
+                           "html_instructions" : "Head \u003cb\u003enorthwest\u003c/b\u003e on \u003cb\u003eUndercliff St\u003c/b\u003e toward \u003cb\u003ePhillips St\u003c/b\u003e",
+                           "polyline" : {
+                              "points" : "x~omEs{}y[EF}@~@A?A@E?k@IC?CN"
+                           },
+                           "start_location" : {
+                              "lat" : -33.8380532,
+                              "lng" : 151.2186591
+                           },
+                           "travel_mode" : "WALKING"
+                        },
+                        {
+                           "distance" : {
+                              "text" : "0.1 km",
+                              "value" : 126
+                           },
+                           "duration" : {
+                              "text" : "2 mins",
+                              "value" : 96
+                           },
+                           "end_location" : {
+                              "lat" : -33.8374625,
+                              "lng" : 151.2169268
+                           },
+                           "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e onto \u003cb\u003ePhillips St\u003c/b\u003e",
+                           "maneuver" : "turn-left",
+                           "polyline" : {
+                              "points" : "vzomEcy}y[HlE@P?h@"
+                           },
+                           "start_location" : {
+                              "lat" : -33.8374013,
+                              "lng" : 151.2182589
+                           },
+                           "travel_mode" : "WALKING"
+                        }
+                     ],
+                     "travel_mode" : "WALKING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "1.1 km",
+                        "value" : 1111
+                     },
+                     "duration" : {
+                        "text" : "4 mins",
+                        "value" : 240
+                     },
+                     "end_location" : {
+                        "lat" : -33.8319936,
+                        "lng" : 151.2222179
+                     },
+                     "html_instructions" : "Bus towards Crows Nest",
+                     "polyline" : {
+                        "points" : "`{omEyp}y[H?Aq@E?kDQU?OJcCbA[JW@QGA?GQAOFc@@CBMA[EWOSm@_@QYIMSg@GQi@kAIKME}@K?AA?K?WEsEc@eBUA?{AMLeBJsAAYV_DJgBB[LoABW}@KCR"
+                     },
+                     "start_location" : {
+                        "lat" : -33.8374458,
+                        "lng" : 151.2169261
+                     },
+                     "transit_details" : {
+                        "arrival_stop" : {
+                           "location" : {
+                              "lat" : -33.8319936,
+                              "lng" : 151.2222179
+                           },
+                           "name" : "Wycombe Rd before Military Rd"
+                        },
+                        "arrival_time" : {
+                           "text" : "9:37am",
+                           "time_zone" : "Australia/Sydney",
+                           "value" : 1548887848
+                        },
+                        "departure_stop" : {
+                           "location" : {
+                              "lat" : -33.8374458,
+                              "lng" : 151.2169261
+                           },
+                           "name" : "Phillips St at Ben Boyd Rd"
+                        },
+                        "departure_time" : {
+                           "text" : "9:33am",
+                           "time_zone" : "Australia/Sydney",
+                           "value" : 1548887605
+                        },
+                        "headsign" : "Crows Nest",
+                        "line" : {
+                           "agencies" : [
+                              {
+                                 "name" : "State Transit Sydney",
+                                 "phone" : "011 61 131500",
+                                 "url" : "http://transportnsw.info/"
+                              }
+                           ],
+                           "color" : "#00b5ef",
+                           "name" : "PrePay-Only - Crows Nest to City Bridge St via Cremorne",
+                           "short_name" : "263",
+                           "text_color" : "#ffffff",
+                           "vehicle" : {
+                              "icon" : "//maps.gstatic.com/mapfiles/transit/iw2/6/bus2.png",
+                              "local_icon" : "//maps.gstatic.com/mapfiles/transit/iw2/6/au-sydney-bus.png",
+                              "name" : "Bus",
+                              "type" : "BUS"
+                           }
+                        },
+                        "num_stops" : 4
+                     },
+                     "travel_mode" : "TRANSIT"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "79 m",
+                        "value" : 79
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 66
+                     },
+                     "end_location" : {
+                        "lat" : -33.8316344,
+                        "lng" : 151.2227387
+                     },
+                     "html_instructions" : "Walk to Neutral Bay Junction, Military Rd, Stand A",
+                     "polyline" : {
+                        "points" : "~xnmEer~y[QA{@IBQ@q@AM"
+                     },
+                     "start_location" : {
+                        "lat" : -33.8319986,
+                        "lng" : 151.2222685
+                     },
+                     "steps" : [
+                        {
+                           "distance" : {
+                              "text" : "47 m",
+                              "value" : 47
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 33
+                           },
+                           "end_location" : {
+                              "lat" : -33.8316288,
+                              "lng" : 151.2224192
+                           },
+                           "html_instructions" : "Head \u003cb\u003enorth\u003c/b\u003e on \u003cb\u003eWycombe Rd\u003c/b\u003e toward \u003cb\u003eMilitary Rd\u003c/b\u003e/\u003cb\u003eA8\u003c/b\u003e",
+                           "polyline" : {
+                              "points" : "~xnmEer~y[QA{@IBQ"
+                           },
+                           "start_location" : {
+                              "lat" : -33.8319986,
+                              "lng" : 151.2222685
+                           },
+                           "travel_mode" : "WALKING"
+                        },
+                        {
+                           "distance" : {
+                              "text" : "32 m",
+                              "value" : 32
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 33
+                           },
+                           "end_location" : {
+                              "lat" : -33.8316344,
+                              "lng" : 151.2227387
+                           },
+                           "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eMilitary Rd\u003c/b\u003e/\u003cb\u003eA8\u003c/b\u003e",
+                           "maneuver" : "turn-right",
+                           "polyline" : {
+                              "points" : "tvnmEcs~y[@q@AM"
+                           },
+                           "start_location" : {
+                              "lat" : -33.8316288,
+                              "lng" : 151.2224192
+                           },
+                           "travel_mode" : "WALKING"
+                        }
+                     ],
+                     "travel_mode" : "WALKING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "5.0 km",
+                        "value" : 5041
+                     },
+                     "duration" : {
+                        "text" : "7 mins",
+                        "value" : 420
+                     },
+                     "end_location" : {
+                        "lat" : -33.865448,
+                        "lng" : 151.2057278
+                     },
+                     "html_instructions" : "Bus towards City Wynyard",
+                     "polyline" : {
+                        "points" : "xvnmEau~y[I??`AqAxEEJOl@mAjEg@hBOj@K^a@`BEZIf@Cb@Ab@?d@Bl@@^?ZAf@Eh@[lDQfD@VA`ADRNZHNdAn@fBdAlCbBpA|@pClBvAt@pCdA`AXzBl@lARdAV`CZjBTbAFzDRdADvGJpBF`B?j@EdBQvW{GdCm@d@K`AWpAWbDWh@?p@@bAH|ARn@RbAVXLr@f@l@VhXvNzBtA`PvIxDpB`Ab@nB~@j@Pv@Hj@JnAPXHt@\\r@Nh@Cj@D~Aj@p@\\h@Jl@D`@Cd@SRCXK\\B`@If@E~DUdAC?O"
+                     },
+                     "start_location" : {
+                        "lat" : -33.831654,
+                        "lng" : 151.222733
+                     },
+                     "transit_details" : {
+                        "arrival_stop" : {
+                           "location" : {
+                              "lat" : -33.865448,
+                              "lng" : 151.2057278
+                           },
+                           "name" : "Wynyard Station, York St, Stand M"
+                        },
+                        "arrival_time" : {
+                           "text" : "9:51am",
+                           "time_zone" : "Australia/Sydney",
+                           "value" : 1548888670
+                        },
+                        "departure_stop" : {
+                           "location" : {
+                              "lat" : -33.831654,
+                              "lng" : 151.222733
+                           },
+                           "name" : "Neutral Bay Junction, Military Rd, Stand A"
+                        },
+                        "departure_time" : {
+                           "text" : "9:35am",
+                           "time_zone" : "Australia/Sydney",
+                           "value" : 1548887751
+                        },
+                        "headsign" : "City Wynyard",
+                        "line" : {
+                           "agencies" : [
+                              {
+                                 "name" : "State Transit Sydney",
+                                 "phone" : "011 61 131500",
+                                 "url" : "http://transportnsw.info/"
+                              }
+                           ],
+                           "color" : "#00b5ef",
+                           "name" : "PrePay-Only - North Avalon Beach to City Wynyard (Express Service)",
+                           "short_name" : "E88",
+                           "text_color" : "#ffffff",
+                           "vehicle" : {
+                              "icon" : "//maps.gstatic.com/mapfiles/transit/iw2/6/bus2.png",
+                              "local_icon" : "//maps.gstatic.com/mapfiles/transit/iw2/6/au-sydney-bus.png",
+                              "name" : "Bus",
+                              "type" : "BUS"
+                           }
+                        },
+                        "num_stops" : 1
+                     },
+                     "travel_mode" : "TRANSIT"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.1 km",
+                        "value" : 149
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 29
+                     },
+                     "end_location" : {
+                        "lat" : -33.8652039,
+                        "lng" : 151.2040936
+                     },
+                     "html_instructions" : "Walk to Wynyard Station, Sydney NSW 2000, Australia",
+                     "polyline" : {
+                        "points" : "bjumEoj{y[s@|H"
+                     },
+                     "start_location" : {
+                        "lat" : -33.8654561,
+                        "lng" : 151.2056848
+                     },
+                     "steps" : [
+                        {
+                           "distance" : {
+                              "text" : "0.1 km",
+                              "value" : 149
+                           },
+                           "duration" : {
+                              "text" : "1 min",
+                              "value" : 29
+                           },
+                           "end_location" : {
+                              "lat" : -33.8652039,
+                              "lng" : 151.2040936
+                           },
+                           "polyline" : {
+                              "points" : "bjumEoj{y[s@|H"
+                           },
+                           "start_location" : {
+                              "lat" : -33.8654561,
+                              "lng" : 151.2056848
+                           },
+                           "travel_mode" : "WALKING"
+                        }
+                     ],
+                     "travel_mode" : "WALKING"
+                  }
+               ],
+               "traffic_speed_entry" : [],
+               "via_waypoint" : []
+            }
+         ],
+         "overview_polyline" : {
+            "points" : "x~omEs{}y[gAhAq@IC?CNJ~E?h@A?H?Aq@E?aEQOJcCbA[JW@SGGQAOHg@@i@EWOSm@_@QY]u@q@}AIKME}@MM?kFi@gBU{AMLeBHmBb@gGPkBBW}@KCR@IQA{@IBQ?_AB@I??`AqAxEUx@qC`Kg@|BMjAAhADlAAbAa@vEQfD@VA`ADRXj@lDtB~E`DpClBvAt@pCdA`AXzBl@lARdAV`CZnD\\`GXhKR`B?j@EdBQvW{GjDy@rCo@bDWh@?tBJ|ARn@RbAVXLr@f@l@VhXvNzBtA`PvIxDpBpDbBj@Pv@HzB\\nAf@r@Nh@Cj@D~Aj@p@\\h@Jl@D`@Cd@SRCXK\\BhAOdGY?O@Hs@|H"
+         },
+         "summary" : "",
+         "warnings" : [
+            "Walking directions are in beta.    Use caution – This route may be missing sidewalks or pedestrian paths."
+         ],
+         "waypoint_order" : []
+      }
+   ],
+   "status" : "OK"
+}

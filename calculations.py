@@ -1,5 +1,7 @@
 import requests
 import json
+import googlemaps
+from datetime import datetime, date
 from os import getenv
 from urllib.parse import urlencode
 from sqlalchemy.orm import sessionmaker
@@ -14,6 +16,7 @@ session = Session()
 
 
 WORK_COORDS = (-33.866428, 151.206540)
+GMAPS_API_KEY = getenv('GMAPS_API_KEY', '123456')
 
 
 def near_noisy_transport(lat, lng):
@@ -21,7 +24,7 @@ def near_noisy_transport(lat, lng):
     point = WKTElement(f"SRID=4326;POINT({lng} {lat})")
 
     query = session.query(Transport).filter(
-        func.ST_DWithin(Transport.geom, point, 0.00015)
+        func.ST_DWithin(Transport.geom, point, 0.0002)
     )
 
     result = False if query.count() == 0 else True
@@ -81,3 +84,22 @@ def get_catchment(lat, lng):
     session.close()
 
     return schools
+
+
+def geocode(address):
+    gmaps = googlemaps.Client(key=GMAPS_API_KEY)
+    geocode_result = gmaps.geocode(address)
+    location = [address['geometry']['location'] for address in geocode_result if address][0]
+    return location
+
+
+def transport_time_google(address):
+    gmaps = googlemaps.Client(key=GMAPS_API_KEY)
+    today = date.today()
+    when_depart = datetime(year=today.year, month=today.month, day=today.day, hour=8)
+    commute = gmaps.directions(address,
+                               "Wynyard Station, Sydney NSW",
+                               mode="transit",
+                               departure_time=when_depart)
+    return commute[0]['legs'][0]['duration']['value']
+

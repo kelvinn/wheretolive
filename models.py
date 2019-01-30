@@ -18,3 +18,15 @@ class Transport(Base):
     __tablename__ = 'transport'
     gid = Column(Integer, primary_key=True)
     geom = Column(Geometry('MULTILINESTRING', srid=4326))
+
+
+class RealEstate(Base):
+    __tablename__ = 'realestate'
+    gid = Column(Integer, primary_key=True)
+    address = Column(String)
+    price = Column(String)
+    url = Column(String)
+    catchment = Column(String)
+    commute = Column(String)
+    noisy = Column(String)
+    geom = Column(Geometry('POINT', srid=4326))

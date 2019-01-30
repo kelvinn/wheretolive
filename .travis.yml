@@ -1,0 +1,20 @@
+dist: xenial
+language: python
+python: 3.7.1
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - pip install -r requirements-test.txt
+  - npm install -g serverless
+
+script:
+  - python tests.py
+
+deploy:
+  provider: script
+  script: sls deploy
+  on:
+    branch: master

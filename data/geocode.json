@@ -1,0 +1,74 @@
+{
+   "results" : [
+      {
+         "address_components" : [
+            {
+               "long_name" : "9",
+               "short_name" : "9",
+               "types" : [ "street_number" ]
+            },
+            {
+               "long_name" : "Undercliff Street",
+               "short_name" : "Undercliff St",
+               "types" : [ "route" ]
+            },
+            {
+               "long_name" : "Neutral Bay",
+               "short_name" : "Neutral Bay",
+               "types" : [ "locality", "political" ]
+            },
+            {
+               "long_name" : "North Sydney Council",
+               "short_name" : "North Sydney",
+               "types" : [ "administrative_area_level_2", "political" ]
+            },
+            {
+               "long_name" : "New South Wales",
+               "short_name" : "NSW",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "Australia",
+               "short_name" : "AU",
+               "types" : [ "country", "political" ]
+            },
+            {
+               "long_name" : "2089",
+               "short_name" : "2089",
+               "types" : [ "postal_code" ]
+            }
+         ],
+         "formatted_address" : "9 Undercliff St, Neutral Bay NSW 2089, Australia",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : -33.8378299,
+                  "lng" : 151.2189011
+               },
+               "southwest" : {
+                  "lat" : -33.8379836,
+                  "lng" : 151.2187291
+               }
+            },
+            "location" : {
+               "lat" : -33.8378918,
+               "lng" : 151.2188275
+            },
+            "location_type" : "ROOFTOP",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : -33.8365577697085,
+                  "lng" : 151.2201640802915
+               },
+               "southwest" : {
+                  "lat" : -33.8392557302915,
+                  "lng" : 151.2174661197085
+               }
+            }
+         },
+         "place_id" : "ChIJtcNkAJGuEmsRsaiWsc_U8Ns",
+         "types" : [ "premise" ]
+      }
+   ],
+   "status" : "OK"
+}
