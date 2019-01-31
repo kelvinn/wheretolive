@@ -1,6 +1,16 @@
 import unittest
 import responses
+from os import getenv
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from models import RealEstate, Association
 import calculations
+import scraper
+
+
+DATABASE_URL = getenv('DATABASE_URL', 'postgresql://postgres@localhost/wheretolive')
+engine = create_engine(DATABASE_URL, echo=False)
+Session = sessionmaker(bind=engine)
 
 
 class AppTestCase(unittest.TestCase):
@@ -26,10 +36,20 @@ class AppTestCase(unittest.TestCase):
 class IntegrationTestCase(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.session = Session()
+        if Association.__table__.exists(engine):
+            Association.__table__.drop(engine)
+
+        if RealEstate.__table__.exists(engine):
+            RealEstate.__table__.drop(engine)
+
+        RealEstate.__table__.create(engine)
+        Association.__table__.create(engine)
 
     def tearDown(self):
-        pass
+        self.session.close()
+        Association.__table__.drop(engine)
+        RealEstate.__table__.drop(engine)
 
     def test_noisy(self):
         result = calculations.near_noisy_transport(-33.843274, 151.211262)
@@ -49,6 +69,15 @@ class IntegrationTestCase(unittest.TestCase):
 
         result = calculations.near_noisy_transport(-33.831030, 151.220389)
         self.assertTrue(result)
+
+        result = calculations.near_noisy_transport(-33.84000, 151.22100)
+        self.assertTrue(result)
+
+    def test_get_catchment(self):
+        result = calculations.get_catchment(-33.840823, 151.181776)
+        expected = [{'catch_type': 'PRIMARY', 'gid': 1295, 'name': 'Greenwich PS'},
+                    {'catch_type': 'HIGH_COED', 'gid': 393, 'name': 'Hunters Hill HS'}]
+        self.assertEqual(expected, result)
 
     @responses.activate
     def test_geocode_catchment_commute(self):
@@ -75,12 +104,41 @@ class IntegrationTestCase(unittest.TestCase):
         commute = calculations.transport_time_google(address)
 
         self.assertIsNotNone(catchment)
-        expected = [{'catch_type': 'PRIMARY', 'name': 'Neutral Bay PS'},
-                    {'catch_type': 'HIGH_COED', 'name': 'Mosman HS'}]
+        expected = [{'catch_type': 'PRIMARY', 'gid': 1539, 'name': 'Neutral Bay PS'},
+                    {'catch_type': 'HIGH_COED', 'gid': 1609, 'name': 'Mosman HS'}]
         self.assertEqual(expected, catchment)
 
         self.assertIsNotNone(commute)
         self.assertEqual(1271, commute)
+
+    @responses.activate
+    def test_save(self):
+        with open(r'data/geocode.json') as f:
+            sample = f.read()
+
+            responses.add(responses.GET, 'https://maps.googleapis.com/maps/api/geocode/json',
+                          body=sample, status=200,
+                          content_type='application/json')
+
+        with open(r'data/directions.json') as f:
+            sample = f.read()
+
+            responses.add(responses.GET, 'https://maps.googleapis.com/maps/api/directions/json',
+                          body=sample, status=200,
+                          content_type='application/json')
+
+        records = [('4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522'),
+                   ('1/15 Morden Street, Cammeray', '$785,000', '/property-apartment-nsw-cammeray-130374818'),
+                   ('1/295 Ernest Street, Neutral Bay', '$100', '/property-apartment-nsw-neutral+bay-130172302'),
+                   ('8/23 Harrison Street, Cremorne', 'Contact Agent', '/property-apartment-nsw-cremorne-130216894'),
+                   ('104/433 Alfred Street, Neutral Bay', '$1,300', '/property-apartment-nsw-neutral+bay-130290086'),
+                   ('10/140 Holt Avenue, Cremorne', 'Contact Agent', '/property-apartment-nsw-cremorne-130288814')]
+
+        result = scraper.save(records)
+        self.assertTrue(result)
+
+        results = self.session.query(RealEstate).all()
+        self.assertEqual(len(results), 6)
 
 
 if __name__ == '__main__':

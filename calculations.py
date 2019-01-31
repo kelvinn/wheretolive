@@ -10,7 +10,7 @@ from geoalchemy2.elements import WKTElement
 from models import Catchments, Transport
 
 DATABASE_URL = getenv('DATABASE_URL', 'postgresql://postgres@localhost/wheretolive')
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=False)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -24,13 +24,11 @@ def near_noisy_transport(lat, lng):
     point = WKTElement(f"SRID=4326;POINT({lng} {lat})")
 
     query = session.query(Transport).filter(
-        func.ST_DWithin(Transport.geom, point, 0.0002)
+        func.ST_DWithin(Transport.geom, point, 0.0004)
     )
 
     result = False if query.count() == 0 else True
-
     session.close()
-
     return result
 
 
@@ -80,9 +78,9 @@ def transport_time(lat, lng):
 def get_catchment(lat, lng):
     query = session.query(Catchments).filter(
             Catchments.geom.ST_Intersects(f"POINT({lng} {lat})"))
-    schools = [{'catch_type': item.catch_type, 'name': item.use_desc} for item in query.all()]
-    session.close()
+    schools = [{'gid': item.gid, 'catch_type': item.catch_type, 'name': item.use_desc} for item in query.all()]
 
+    session.close()
     return schools
 
 
@@ -101,5 +99,10 @@ def transport_time_google(address):
                                "Wynyard Station, Sydney NSW",
                                mode="transit",
                                departure_time=when_depart)
-    return commute[0]['legs'][0]['duration']['value']
+    try:
+        total_commute = commute[0]['legs'][0]['duration']['value']
+    except IndexError:
+        total_commute = 999999
+
+    return total_commute
 

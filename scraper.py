@@ -3,16 +3,15 @@
 from bs4 import BeautifulSoup
 import requests
 from os import getenv
-from urllib.parse import urlencode
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 from geoalchemy2.elements import WKTElement
-from models import RealEstate
+from models import RealEstate, Catchments, Association
 import calculations
 
 
 DATABASE_URL = getenv('DATABASE_URL', 'postgresql://postgres@localhost/wheretolive')
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -29,7 +28,7 @@ def scrape():
     try:
 
         # Loop through first 20 pages each day and add results to dataframe at completion.
-        for count in range(1, 2):
+        for count in range(1, 10):
 
             countstr = str(count)
 
@@ -87,24 +86,39 @@ def scrape():
 def save(records):
     for record in records:
         address, price, url = record
-        geom = calculations.geocode(address)
-        print(geom)
-        lng, lat = geom['lng'], geom['lat']
-        point = "POINT(%s %s)" % (lng, lat)
 
-        catchment = calculations.get_catchment(lat, lng)
-        noisy = calculations.near_noisy_transport(lat, lng)
-        #commute = calculations.transport_time(lat, lng)
-        commute = calculations.transport_time_google(address)
-        realestate = RealEstate(address=address,
-                                price=price,
-                                url=url,
-                                catchment=catchment,
-                                commute=commute,
-                                noisy=noisy,
-                                geom=WKTElement(point, srid=4326))
-        session.add(realestate)
-    session.commit()
+        if session.query(RealEstate).filter_by(address=address).count() == 0:
+            geom = calculations.geocode(address)
+
+            lng, lat = geom['lng'], geom['lat']
+            point = "POINT(%s %s)" % (lng, lat)
+
+            catchments = calculations.get_catchment(lat, lng)
+            catchment_gids = [item['gid'] for item in catchments]
+            noisy = calculations.near_noisy_transport(lat, lng)
+            commute = calculations.transport_time_google(address)
+
+            realestate = RealEstate(address=address,
+                                    price=price,
+                                    url=url,
+                                    commute=commute,
+                                    noisy=noisy,
+                                    geom=WKTElement(point, srid=4326))
+
+            cs = session.query(Catchments).filter(
+                Catchments.gid.in_(catchment_gids)).all()
+
+            # better way to do this?
+            for c in cs:
+                a = Association()
+                a.catchments = c
+                realestate.catchments.append(a)
+            session.add(realestate)
+    try:
+        session.commit()
+        return True
+    except:
+        return False
 
 
 def run():
@@ -113,4 +127,9 @@ def run():
 
 
 if __name__ == '__main__':
+    if not RealEstate.__table__.exists(engine):
+        RealEstate.__table__.create(engine)
+
+    if not Association.__table__.exists(engine):
+        Association.__table__.create(engine)
     run()
