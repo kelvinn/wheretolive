@@ -121,7 +121,7 @@ def save(records):
         return False
 
 
-def run():
+def crawl(event, context):
     scraped_records = scrape()
     save(scraped_records)
 
@@ -132,4 +132,4 @@ if __name__ == '__main__':
 
     if not Association.__table__.exists(engine):
         Association.__table__.create(engine)
-    run()
+    crawl(None, None)
