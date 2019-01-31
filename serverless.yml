@@ -21,7 +21,7 @@ provider:
   name: aws
   runtime: python3.6
   memorySize: 512
-  timeout: 10
+  timeout: 120
   environment:
     TFNSW_API_KEY: ${ssm:/wheretolive/dev/tfnsw~true}
     DATABASE_URL: ${ssm:/wheretolive/dev/db~true}
