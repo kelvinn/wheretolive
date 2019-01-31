@@ -37,19 +37,14 @@ class IntegrationTestCase(unittest.TestCase):
 
     def setUp(self):
         self.session = Session()
-        if Association.__table__.exists(engine):
-            Association.__table__.drop(engine)
+        if not Association.__table__.exists(engine):
+            Association.__table__.create(engine)
 
-        if RealEstate.__table__.exists(engine):
-            RealEstate.__table__.drop(engine)
-
-        RealEstate.__table__.create(engine)
-        Association.__table__.create(engine)
+        if not RealEstate.__table__.exists(engine):
+            RealEstate.__table__.create(engine)
 
     def tearDown(self):
         self.session.close()
-        Association.__table__.drop(engine)
-        RealEstate.__table__.drop(engine)
 
     def test_noisy(self):
         result = calculations.near_noisy_transport(-33.843274, 151.211262)
