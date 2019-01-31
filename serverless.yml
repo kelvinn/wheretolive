@@ -71,8 +71,8 @@ functions:
           path: /lookup
           method: get
 
-  scraper:
-    handler: crawl
+  crawl:
+    handler: scraper.crawl
     events:
       - schedule: rate(6 hours)
 
