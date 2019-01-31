@@ -121,7 +121,7 @@ def save(records):
         return False
 
 
-def crawl(event, context):
+def crawl(event):
     scraped_records = scrape()
     save(scraped_records)
 
