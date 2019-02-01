@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 import requests
+import logging
 from os import getenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -127,7 +128,8 @@ def save(enriched):
     try:
         session.commit()
         return True
-    except:
+    except Exception as err:
+        logging.error(f'Error saving record: {err}')
         return False
 
 

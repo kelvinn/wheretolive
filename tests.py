@@ -131,7 +131,6 @@ class IntegrationTestCase(unittest.TestCase):
         self.assertIsNotNone(commute)
         self.assertEqual(1271, commute)
 
-
     @responses.activate
     def test_enriched_records(self):
         with open(r'data/geocode.json') as f:
