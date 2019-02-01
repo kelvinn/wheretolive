@@ -160,7 +160,7 @@ def crawl(event, context):
     scraped_records = scrape()
     enriched = enrich_records(scraped_records)
     save(enriched)
-    filtered = filter_alerts(enriched)
+    filtered = [filter_alerts(enriched)]
     send(filtered)
 
 
