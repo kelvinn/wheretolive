@@ -12,6 +12,13 @@ DATABASE_URL = getenv('DATABASE_URL', 'postgresql://postgres@localhost/wheretoli
 engine = create_engine(DATABASE_URL, echo=False)
 Session = sessionmaker(bind=engine)
 
+RECORDS = [('4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522'),
+           ('1/15 Morden Street, Cammeray', '$785,000', '/property-apartment-nsw-cammeray-130374818'),
+           ('1/295 Ernest Street, Neutral Bay', '$100', '/property-apartment-nsw-neutral+bay-130172302'),
+           ('8/23 Harrison Street, Cremorne', 'Contact Agent', '/property-apartment-nsw-cremorne-130216894'),
+           ('104/433 Alfred Street, Neutral Bay', '$1,300', '/property-apartment-nsw-neutral+bay-130290086'),
+           ('10/140 Holt Avenue, Cremorne', 'Contact Agent', '/property-apartment-nsw-cremorne-130288814')]
+
 
 class AppTestCase(unittest.TestCase):
 
@@ -32,6 +39,21 @@ class AppTestCase(unittest.TestCase):
         result = calculations.transport_time('-33.846206', '151.229796')
         self.assertEqual(38.2, result)
 
+    @responses.activate
+    def test_scrape(self):
+        with open(r'data/rea.html') as f:
+            sample = f.read()
+
+        responses.add(responses.GET, 'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,+nsw+2090%3b+kurraba+point,+nsw+2089%3b+neutral+bay,+nsw+2089%3b+cremorne,+nsw+2090%3b+cammeray,+nsw+2062/list-1?maxBeds=any',
+                      body=sample, status=200,
+                      content_type='text/html')
+        results = scraper.scrape(2)
+
+        expected = ('6/4 Milson Road, Cremorne Point', 'Auction Sat 16 February - Guide $1,100,000',
+                    '/property-apartment-nsw-cremorne+point-130285398')
+
+        self.assertEqual(expected, results[0])
+
 
 class IntegrationTestCase(unittest.TestCase):
 
@@ -44,6 +66,9 @@ class IntegrationTestCase(unittest.TestCase):
             RealEstate.__table__.create(engine)
 
     def tearDown(self):
+        self.session.query(Association).delete()
+        self.session.query(RealEstate).delete()
+        self.session.commit()
         self.session.close()
 
     def test_noisy(self):
@@ -106,6 +131,27 @@ class IntegrationTestCase(unittest.TestCase):
         self.assertIsNotNone(commute)
         self.assertEqual(1271, commute)
 
+
+    @responses.activate
+    def test_enriched_records(self):
+        with open(r'data/geocode.json') as f:
+            sample = f.read()
+
+            responses.add(responses.GET, 'https://maps.googleapis.com/maps/api/geocode/json',
+                          body=sample, status=200,
+                          content_type='application/json')
+
+        with open(r'data/directions.json') as f:
+            sample = f.read()
+
+            responses.add(responses.GET, 'https://maps.googleapis.com/maps/api/directions/json',
+                          body=sample, status=200,
+                          content_type='application/json')
+
+        result = scraper.enrich_records(RECORDS)
+        self.assertTrue(result)
+        self.assertEqual(6, len(result))
+
     @responses.activate
     def test_save(self):
         with open(r'data/geocode.json') as f:
@@ -122,18 +168,13 @@ class IntegrationTestCase(unittest.TestCase):
                           body=sample, status=200,
                           content_type='application/json')
 
-        records = [('4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522'),
-                   ('1/15 Morden Street, Cammeray', '$785,000', '/property-apartment-nsw-cammeray-130374818'),
-                   ('1/295 Ernest Street, Neutral Bay', '$100', '/property-apartment-nsw-neutral+bay-130172302'),
-                   ('8/23 Harrison Street, Cremorne', 'Contact Agent', '/property-apartment-nsw-cremorne-130216894'),
-                   ('104/433 Alfred Street, Neutral Bay', '$1,300', '/property-apartment-nsw-neutral+bay-130290086'),
-                   ('10/140 Holt Avenue, Cremorne', 'Contact Agent', '/property-apartment-nsw-cremorne-130288814')]
+        enriched = scraper.enrich_records(RECORDS)
 
-        result = scraper.save(records)
+        result = scraper.save(enriched)
         self.assertTrue(result)
 
         results = self.session.query(RealEstate).all()
-        self.assertEqual(len(results), 6)
+        self.assertEqual(6, len(results))
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def scrape():
+def scrape(num_pages=20):
     # Set variables.
     addresses = []
     urls = []
@@ -28,7 +28,7 @@ def scrape():
     try:
 
         # Loop through first 20 pages each day and add results to dataframe at completion.
-        for count in range(1, 50):
+        for count in range(1, num_pages):
 
             countstr = str(count)
 
@@ -83,11 +83,12 @@ def scrape():
     return combined
 
 
-def save(records):
+def enrich_records(records):
+    enriched = []
     for record in records:
         address, price, url = record
-
-        if session.query(RealEstate).filter_by(address=address).count() == 0:
+        p = session.query(RealEstate).filter_by(address=address).count()
+        if p == 0:
             geom = calculations.geocode(address)
 
             lng, lat = geom['lng'], geom['lat']
@@ -98,22 +99,31 @@ def save(records):
             noisy = calculations.near_noisy_transport(lat, lng)
             commute = calculations.transport_time_google(address)
 
-            realestate = RealEstate(address=address,
-                                    price=price,
-                                    url=url,
-                                    commute=commute,
-                                    noisy=noisy,
-                                    geom=WKTElement(point, srid=4326))
+            enriched.append([address, price, url, noisy, commute, catchment_gids, point])
+    return enriched
 
-            cs = session.query(Catchments).filter(
-                Catchments.gid.in_(catchment_gids)).all()
 
-            # better way to do this?
-            for c in cs:
-                a = Association()
-                a.catchments = c
-                realestate.catchments.append(a)
-            session.add(realestate)
+def save(enriched):
+
+    for record in enriched:
+        address, price, url, noisy, commute, catchment_gids, point = record
+
+        realestate = RealEstate(address=address,
+                                price=price,
+                                url=url,
+                                commute=commute,
+                                noisy=noisy,
+                                geom=WKTElement(point, srid=4326))
+
+        cs = session.query(Catchments).filter(
+            Catchments.gid.in_(catchment_gids)).all()
+
+        # better way to do this?
+        for c in cs:
+            a = Association()
+            a.catchments = c
+            realestate.catchments.append(a)
+        session.add(realestate)
     try:
         session.commit()
         return True
@@ -123,7 +133,8 @@ def save(records):
 
 def crawl(event, context):
     scraped_records = scrape()
-    save(scraped_records)
+    enriched = enrich_records(scraped_records)
+    save(enriched)
 
 
 if __name__ == '__main__':
