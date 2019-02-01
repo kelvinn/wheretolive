@@ -28,7 +28,7 @@ def scrape():
     try:
 
         # Loop through first 20 pages each day and add results to dataframe at completion.
-        for count in range(1, 10):
+        for count in range(1, 20):
 
             countstr = str(count)
 
