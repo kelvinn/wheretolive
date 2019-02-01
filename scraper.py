@@ -3,7 +3,7 @@
 from bs4 import BeautifulSoup
 import requests
 import logging
-from os import getenv
+from os import getenv, environ
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from geoalchemy2.elements import WKTElement
@@ -104,8 +104,31 @@ def enrich_records(records):
     return enriched
 
 
-def save(enriched):
+def send(msg):
 
+    app_token = environ.get('APP_TOKEN', None)
+    user_key = environ.get('USER_KEY', None)
+
+    logging.info(f'Sending the msg: {msg}.')
+
+    r = requests.post('https://api.pushover.net/1/messages.json',
+                      data={
+                          'token': app_token,
+                          'user': user_key,
+                          'message': msg,
+                      })
+
+    return r.status_code
+
+
+def filter_alerts(records):
+
+    for record in records:
+        if record[3] is False and record[4] < 1500 and 1539 in record[5]:
+            yield record
+
+
+def save(enriched):
     for record in enriched:
         address, price, url, noisy, commute, catchment_gids, point = record
 
@@ -137,6 +160,8 @@ def crawl(event, context):
     scraped_records = scrape()
     enriched = enrich_records(scraped_records)
     save(enriched)
+    filtered = filter_alerts(enriched)
+    send(filtered)
 
 
 if __name__ == '__main__':

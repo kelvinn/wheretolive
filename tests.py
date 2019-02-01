@@ -151,6 +151,39 @@ class IntegrationTestCase(unittest.TestCase):
         self.assertTrue(result)
         self.assertEqual(6, len(result))
 
+        expected = ['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
+                    False, 1271, [1539, 1609], 'POINT(151.2188275 -33.8378918)']
+        self.assertEqual(expected, result[0])
+
+    def test_filter_alerts(self):
+        sample = [['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
+                   False, 1271, [1539, 1609], 'POINT(151.2188275 -33.8378918)'],
+                  ['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
+                   False, 1234, [1234, 1609], 'POINT(151.2188275 -33.8378918)'],
+                  ['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
+                   True, 1400, [1539, 1609], 'POINT(151.2188275 -33.8378918)'],
+                  ['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
+                   False, 1800, [1539, 1609], 'POINT(151.2188275 -33.8378918)'],
+                  ]
+
+        result = [scraper.filter_alerts(sample)]
+
+        self.assertEqual(1, len(result))
+
+    @responses.activate
+    def test_send(self):
+
+        responses.add(responses.POST, 'https://api.pushover.net/1/messages.json',
+                      status=201,
+                      json={
+                          'status': '1',
+                          'request': '647d2300-702c-4b38-8b2f-d56326ae460b'
+                      })
+
+        result = scraper.send('Test Msg')
+
+        self.assertEqual(201, result)
+
     @responses.activate
     def test_save(self):
         with open(r'data/geocode.json') as f:

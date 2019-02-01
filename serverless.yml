@@ -26,6 +26,8 @@ provider:
     TFNSW_API_KEY: ${ssm:/wheretolive/dev/tfnsw~true}
     DATABASE_URL: ${ssm:/wheretolive/dev/db~true}
     GMAPS_API_KEY: ${ssm:/wheretolive/dev/gmaps~true}
+    APP_TOKEN: ${ssm:/wheretolive/dev/apptoken~true}
+    USER_KEY: ${ssm:/wheretolive/dev/userkey~true}
 
 # you can overwrite defaults here
 #  stage: dev
