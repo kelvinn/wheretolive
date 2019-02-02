@@ -155,6 +155,14 @@ class IntegrationTestCase(unittest.TestCase):
                     False, 1271, [1539, 1609], 'POINT(151.2188275 -33.8378918)']
         self.assertEqual(expected, result[0])
 
+    def test_format_msg(self):
+        sample = [['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
+                   False, 1271, [1539, 1609], 'POINT(151.2188275 -33.8378918)']]
+
+        result = scraper.format_msg(sample)
+
+        self.assertEqual(1, result)
+
     def test_filter_alerts(self):
         sample = [['4/18 Spruson Street, Neutral Bay', 'Auction', '/property-apartment-nsw-neutral+bay-130266522',
                    False, 1271, [1539, 1609], 'POINT(151.2188275 -33.8378918)'],
@@ -166,9 +174,9 @@ class IntegrationTestCase(unittest.TestCase):
                    False, 1800, [1539, 1609], 'POINT(151.2188275 -33.8378918)'],
                   ]
 
-        result = [scraper.filter_alerts(sample)]
+        result = scraper.filter_alerts(sample)
 
-        self.assertEqual(1, len(result))
+        self.assertEqual(1, len(list(result)))
 
     @responses.activate
     def test_send(self):

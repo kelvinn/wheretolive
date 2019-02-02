@@ -104,6 +104,10 @@ def enrich_records(records):
     return enriched
 
 
+def format_msg(records):
+    return 1
+
+
 def send(msg):
 
     app_token = environ.get('APP_TOKEN', None)
@@ -115,7 +119,7 @@ def send(msg):
                       data={
                           'token': app_token,
                           'user': user_key,
-                          'message': msg,
+                          'message': str(msg),
                       })
 
     return r.status_code
@@ -160,8 +164,8 @@ def crawl(event, context):
     scraped_records = scrape()
     enriched = enrich_records(scraped_records)
     save(enriched)
-    filtered = [filter_alerts(enriched)]
-    send(filtered)
+    filtered = filter_alerts(enriched)
+    send(list(filtered))
 
 
 if __name__ == '__main__':
