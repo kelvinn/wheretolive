@@ -164,8 +164,9 @@ def crawl(event, context):
     scraped_records = scrape()
     enriched = enrich_records(scraped_records)
     save(enriched)
-    filtered = filter_alerts(enriched)
-    send(list(filtered))
+    filtered = list(filter_alerts(enriched))
+    if len(filtered) > 0:
+        send(filtered)
 
 
 if __name__ == '__main__':
