@@ -11,7 +11,6 @@ from models import RealEstate, Catchments, Association
 import calculations
 
 logger = logging.getLogger()
-logger.setLevel(logger.info)
 
 DATABASE_URL = getenv('DATABASE_URL', 'postgresql://postgres@localhost/wheretolive')
 engine = create_engine(DATABASE_URL)
