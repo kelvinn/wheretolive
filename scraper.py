@@ -86,7 +86,7 @@ def scrape(num_pages=20):
 
 def enrich_records(records):
     enriched = []
-    logging.info(f'Starting enrichment...')
+    print(f'Starting enrichment...')
     for record in records:
         address, price, url = record
         p = session.query(RealEstate).filter_by(address=address).count()
