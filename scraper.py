@@ -10,6 +10,8 @@ from geoalchemy2.elements import WKTElement
 from models import RealEstate, Catchments, Association
 import calculations
 
+logger = logging.getLogger()
+logger.setLevel(logger.info)
 
 DATABASE_URL = getenv('DATABASE_URL', 'postgresql://postgres@localhost/wheretolive')
 engine = create_engine(DATABASE_URL)
@@ -103,7 +105,7 @@ def enrich_records(records):
 
             enriched.append([address, price, url, noisy, commute, catchment_gids, point])
 
-    logging.info(f'Enriched: {len(enriched)} addresses.')
+    logger.info(f'Enriched: {len(enriched)} addresses.')
     return enriched
 
 
@@ -116,7 +118,7 @@ def send(msg):
     app_token = environ.get('APP_TOKEN', None)
     user_key = environ.get('USER_KEY', None)
 
-    logging.info(f'Sending the msg: {msg}.')
+    logger.info(f'Sending the msg: {msg}.')
 
     r = requests.post('https://api.pushover.net/1/messages.json',
                       data={
@@ -157,7 +159,7 @@ def save(enriched):
         session.add(realestate)
     try:
         session.commit()
-        logging.info(f'Successfully commited records to database.')
+        logger.info(f'Successfully commited records to database.')
         return True
     except Exception as err:
         logging.error(f'Error saving record: {err}')
