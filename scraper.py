@@ -17,6 +17,7 @@ engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
 
 def scrape(num_pages=20):
     # Set variables.
@@ -37,7 +38,9 @@ def scrape(num_pages=20):
             page_link = f'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,' \
                 f'+nsw+2090%3b+kurraba+point,+nsw+2089%3b+neutral+bay,+nsw+2089%3b+cremorne,+nsw+2090%3b+cammeray,' \
                 f'+nsw+2062/list-{countstr}?maxBeds=any'
-            page_response = requests.get(page_link, timeout=5)
+
+            headers = {'User-Agent': USER_AGENT}
+            page_response = requests.get(page_link, headers=headers, timeout=5)
 
             page_content = BeautifulSoup(page_response.content, "html.parser")
 
@@ -73,7 +76,7 @@ def scrape(num_pages=20):
         for address in addresses:
             addressDF.append(address)
 
-        # Write to dataframe, then to CSV file.
+        # Write to dataframe, then to database
 
         combined = list(zip(*[addressDF, priceDF, urls]))
 
