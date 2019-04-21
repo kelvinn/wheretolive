@@ -1,6 +1,6 @@
 GeoAlchemy2
 geojson
-psycopg2
+psycopg2-binary
 SQLAlchemy
 shapely
 requests
