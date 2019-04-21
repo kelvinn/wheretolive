@@ -97,15 +97,16 @@ def enrich_records(records):
         if p == 0:
             geom = calculations.geocode(address)
 
-            lng, lat = geom['lng'], geom['lat']
-            point = "POINT(%s %s)" % (lng, lat)
+            if geom:
+                lng, lat = geom['lng'], geom['lat']
+                point = "POINT(%s %s)" % (lng, lat)
 
-            catchments = calculations.get_catchment(lat, lng)
-            catchment_gids = [item['gid'] for item in catchments]
-            noisy = calculations.near_noisy_transport(lat, lng)
-            commute = calculations.transport_time_google(address)
+                catchments = calculations.get_catchment(lat, lng)
+                catchment_gids = [item['gid'] for item in catchments]
+                noisy = calculations.near_noisy_transport(lat, lng)
+                commute = calculations.transport_time_google(address)
 
-            enriched.append([address, price, url, noisy, commute, catchment_gids, point])
+                enriched.append([address, price, url, noisy, commute, catchment_gids, point])
 
     logger.info(f'Enriched: {len(enriched)} addresses.')
     return enriched

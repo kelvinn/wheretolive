@@ -87,8 +87,9 @@ def get_catchment(lat, lng):
 def geocode(address):
     gmaps = googlemaps.Client(key=GMAPS_API_KEY)
     geocode_result = gmaps.geocode(address)
-    location = [address['geometry']['location'] for address in geocode_result if address][0]
-    return location
+
+    location = [address['geometry']['location'] for address in geocode_result if len(address) > 0]
+    return location[0] if location else None
 
 
 def transport_time_google(address):
