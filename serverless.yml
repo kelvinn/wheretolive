@@ -65,7 +65,7 @@ provider:
 functions:
   app:
     handler: app.handler
-    reservedConcurrency: 5
+    reservedConcurrency: 1
     events:
       - http:
           path: /lookup
