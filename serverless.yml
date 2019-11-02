@@ -20,7 +20,7 @@ service: wheretolive # NOTE: update this with your service name
 provider:
   name: aws
   runtime: python3.7
-  memorySize: 512
+  memorySize: 1024
   timeout: 300
   environment:
     TFNSW_API_KEY: ${ssm:/wheretolive/dev/tfnsw~true}

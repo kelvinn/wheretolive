@@ -3,6 +3,6 @@ geojson
 psycopg2-binary
 SQLAlchemy
 shapely
-requests
+requests==2.21.0
 bs4
 googlemaps
