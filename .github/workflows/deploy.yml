@@ -35,7 +35,7 @@ jobs:
         run: |
           python tests.py
         env:
-          DATABASE_URL: 'postgresql://postgres@postgres/postgres'
+          DATABASE_URL: 'postgresql://postgres:postgres@postgres/postgres'
 
   deploy:
     needs: test
