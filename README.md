@@ -1,5 +1,7 @@
 # Wheretolive ... ?
 
+![Test and Deploy](https://github.com/kelvinn/wheretolive/workflows/Test%20and%20Deploy/badge.svg)
+
 ### Loading Data
 
 #### Transport
