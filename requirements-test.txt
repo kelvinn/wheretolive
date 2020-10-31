@@ -1,2 +1,2 @@
--r requirements.txt
 responses==0.10.4
+-r requirements.txt
