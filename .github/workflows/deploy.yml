@@ -1,6 +1,13 @@
 name: Test and Deploy
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
 
 jobs:
   test:
@@ -41,6 +48,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
 
+    if: github.event_name == 'push' # Skip on pull requests
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
