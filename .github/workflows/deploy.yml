@@ -43,7 +43,7 @@ jobs:
       - name: Install serverless
         run: |
           sudo npm install -g serverless
-          sudo chown `whoami` .cache
+          sudo chown `whoami` /home/runner/.cache
           sls plugin install -n serverless-python-requirements
           sls plugin install -n serverless-wsgi
       - name: Deploy to serverless
