@@ -42,8 +42,8 @@ jobs:
           python-version: 3.7
       - name: Install serverless
         run: |
-          if [ -d "/home/runner/.cache/serverless-python-requirements" ]; then rm -Rf /home/runner/.cache/serverless-python-requirements; fi
           sudo npm install -g serverless
+          sudo chown `whoami` .cache
           sls plugin install -n serverless-python-requirements
           sls plugin install -n serverless-wsgi
       - name: Deploy to serverless
