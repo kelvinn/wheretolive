@@ -95,8 +95,8 @@ class IntegrationTestCase(unittest.TestCase):
 
     def test_get_catchment(self):
         result = calculations.get_catchment(-33.840823, 151.181776)
-        expected = [{'catch_type': 'PRIMARY', 'gid': 1295, 'name': 'Greenwich PS'},
-                    {'catch_type': 'HIGH_COED', 'gid': 393, 'name': 'Hunters Hill HS'}]
+        expected = [{'catch_type': 'HIGH_COED', 'gid': 393, 'name': 'Hunters Hill HS'}, 
+                    {'catch_type': 'PRIMARY', 'gid': 1295, 'name': 'Greenwich PS'}]
         self.assertEqual(expected, result)
 
     @responses.activate

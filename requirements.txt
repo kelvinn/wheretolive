@@ -1,8 +1,10 @@
 GeoAlchemy2
 geojson
 psycopg2-binary
-SQLAlchemy
+SQLAlchemy==1.4.9
 shapely
 requests==2.21.0
 bs4
 googlemaps
+fastapi
+uvicorn[standard]

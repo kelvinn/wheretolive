@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for wheretolive-a32cd on 2023-10-08T10:34:25+11:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "wheretolive-a32cd"
+primary_region = "syd"
+
+[build]
+
+[env]
+  PORT = "8000"
+
+[processes]
+  web = "uvicorn main:app --host 0.0.0.0 --port 8000"
+  worker = "python scraper.py"
+
+
+[http_service]
+  processes = ["web"] # this service only applies to the web process
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["web"]

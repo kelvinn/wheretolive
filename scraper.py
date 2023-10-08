@@ -9,6 +9,7 @@ from sqlalchemy import create_engine
 from geoalchemy2.elements import WKTElement
 from models import RealEstate, Catchments, Association
 import calculations
+from time import sleep
 
 logger = logging.getLogger()
 
@@ -17,8 +18,8 @@ engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
-
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
+REA_COOKIE = getenv('REA_COOKIE', None)
 
 def scrape(num_pages=30):
     # Set variables.
@@ -33,16 +34,24 @@ def scrape(num_pages=30):
 
         # Loop through first 20 pages each day and add results to dataframe at completion.
         for count in range(1, num_pages):
+            sleep(5)
 
             countstr = str(count)
 
             page_link = f'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,' \
                 f'+nsw+2090%3b+kurraba+point,+nsw+2089%3b+neutral+bay,+nsw+2089%3b+cremorne,+nsw+2090%3b+cammeray,' \
                 f'+nsw+2062/list-{countstr}?maxBeds=any'
+            print(page_link)
 
-            headers = {'User-Agent': USER_AGENT}
+            headers = {
+                'User-Agent': USER_AGENT,
+                'Authority': 'www.realestate.com.au',
+                'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'",
+                'Accept-Language': "en-NZ,en;q=0.9,en-GB;q=0.8,en-US;q=0.7,fr;q=0.6'",
+                'Cookie': REA_COOKIE
+                }
             page_response = requests.get(page_link, headers=headers, timeout=5)
-
+            print(page_response)
             page_content = BeautifulSoup(page_response.content, "html.parser")
 
             html = page_content.prettify("utf-8")
@@ -80,7 +89,7 @@ def scrape(num_pages=30):
         # Write to dataframe, then to database
 
         combined = list(zip(*[addressDF, priceDF, urls]))
-
+ 
         print('All done :)')
 
     except (ValueError, AttributeError) as e:
@@ -172,6 +181,7 @@ def save(enriched):
 
 def crawl(event, context):
     scraped_records = scrape()
+    print(scraped_records)
     enriched = enrich_records(scraped_records)
     save(enriched)
     filtered = list(filter_alerts(enriched))
@@ -185,4 +195,5 @@ if __name__ == '__main__':
 
     if not Association.__table__.exists(engine):
         Association.__table__.create(engine)
-    crawl(None, None)
+    # crawl(None, None)
+    print("running")
