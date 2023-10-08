@@ -10,6 +10,7 @@ primary_region = "syd"
 
 [env]
   PORT = "8000"
+  FLY_SCALE_TO_ZERO = "1h"
 
 [processes]
   web = "uvicorn main:app --host 0.0.0.0 --port 8000"
