@@ -15,7 +15,7 @@ fly scale count 1 --yes --process-group worker
 sleep 5 # Wait for machine to get destroyed
 
 MACHINE_ID=$(fly machine list --json | jq -r -c '.[] | select(.config.metadata.fly_process_group == "worker") | .id')
-STATE=$(fly machine list --json | jq -r -c '.[].state')
+STATE=$(fly machine list --json | jq -r -c '.[] | select(.config.metadata.fly_process_group == "worker") | .state')
 
 # Sometimes a machine stays in the 'destroying' state for a while 
 # and Fly's gateway times out, so we are using this little hack to
@@ -23,7 +23,7 @@ STATE=$(fly machine list --json | jq -r -c '.[].state')
 until [[ "$STATE" == "stopped" || "$STATE" == "started" ]]
 do
    sleep 10
-   STATE=$(fly machine list --json | jq -r -c '.[].state')
+   STATE=$(fly machine list --json | jq -r -c '.[] | select(.config.metadata.fly_process_group == "worker") | .state')
    echo $MACHINE_ID, $STATE, "stopped"
 done
 
