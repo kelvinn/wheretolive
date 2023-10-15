@@ -11,7 +11,7 @@ APP_NAME="wheretolive-a32cd"
 
 fly deploy --ha=false --strategy immediate --wait-timeout 240
 
-sleep 5 # Wait for machine to get replaced
+sleep 10 # Wait for machine to get replaced
 
 MACHINE_ID=$(fly machine list --json | jq -r -c '.[] | select(.config | .metadata | .fly_process_group | contains("worker")) | .id')
 fly machine update $MACHINE_ID --yes --restart on-fail --skip-health-checks --schedule=daily --metadata fly_process_group=worker
