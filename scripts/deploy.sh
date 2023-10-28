@@ -27,4 +27,4 @@ do
    echo $MACHINE_ID, $STATE, "stopped"
 done
 
-fly machine update $MACHINE_ID --yes --wait-timeout 600 --restart on-fail --skip-health-checks --schedule=daily --metadata fly_process_group=worker
+fly machine run $MACHINE_ID --wait-timeout 600 --restart on-fail --skip-health-checks --schedule=daily --metadata fly_process_group=worker
