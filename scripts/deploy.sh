@@ -9,10 +9,11 @@ set -e
 TAG="0.0.$GITHUB_RUN_NUMBER" # Initially set this to "0.0.1", and then update to come from Github Actions
 APP_NAME="wheretolive-a32cd"
 
+
 fly deploy --ha=false --strategy immediate --wait-timeout 240
 fly scale count 1 --yes --process-group worker
 
-sleep 5 # Wait for machine to get destroyed
+sleep 10 # Wait for machine to get destroyed
 
 MACHINE_ID=$(fly machine list --json | jq -r -c '.[] | select(.config.metadata.fly_process_group == "worker") | .id')
 STATE=$(fly machine list --json | jq -r -c '.[] | select(.config.metadata.fly_process_group == "worker") | .state')
@@ -24,7 +25,7 @@ until [[ "$STATE" == "stopped" || "$STATE" == "started" ]]
 do
    sleep 10
    STATE=$(fly machine list --json | jq -r -c '.[] | select(.config.metadata.fly_process_group == "worker") | .state')
-   echo $MACHINE_ID, $STATE, "stopped"
+   echo "Waiting for machine" $MACHINE_ID "to enter 'stopped' state. Current state: " $STATE
 done
 
-fly machine run $MACHINE_ID --wait-timeout 600 --restart on-fail --skip-health-checks --schedule=daily --metadata fly_process_group=worker
+fly machine run $MACHINE_ID --restart on-fail --schedule=daily --metadata fly_process_group=worker
