@@ -8,3 +8,4 @@ bs4
 googlemaps
 fastapi
 uvicorn[standard]
+sentry-sdk>=1.32.0

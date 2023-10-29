@@ -10,6 +10,20 @@ from geoalchemy2.elements import WKTElement
 from models import RealEstate, Catchments, Association
 import calculations
 from time import sleep
+import sentry_sdk
+from sentry_sdk.crons import monitor
+
+SENTRY_DSN = getenv('SENTRY_DSN')
+
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+)
 
 logger = logging.getLogger()
 
@@ -31,17 +45,15 @@ def scrape(num_pages=30):
     combined = None
 
     try:
-
+        
         # Loop through first 20 pages each day and add results to dataframe at completion.
         for count in range(1, num_pages):
-            sleep(5)
 
             countstr = str(count)
 
             page_link = f'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,' \
                 f'+nsw+2090%3b+kurraba+point,+nsw+2089%3b+neutral+bay,+nsw+2089%3b+cremorne,+nsw+2090%3b+cammeray,' \
                 f'+nsw+2062/list-{countstr}?maxBeds=any'
-            print(page_link)
 
             headers = {
                 'User-Agent': USER_AGENT,
@@ -51,7 +63,7 @@ def scrape(num_pages=30):
                 'Cookie': REA_COOKIE
                 }
             page_response = requests.get(page_link, headers=headers, timeout=5)
-            print(page_response)
+
             page_content = BeautifulSoup(page_response.content, "html.parser")
 
             html = page_content.prettify("utf-8")
@@ -73,8 +85,8 @@ def scrape(num_pages=30):
 
             for a in soup.find_all('a', attrs={"class": "details-link residential-card__details-link"}):
                 addresses.append(a.span.contents[0].strip())
-
-            print(countstr)
+            
+            sleep(5)
 
         # Clean tags from prices data.
 

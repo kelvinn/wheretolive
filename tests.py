@@ -44,7 +44,7 @@ class AppTestCase(unittest.TestCase):
         with open(r'data/rea.html') as f:
             sample = f.read()
 
-        responses.add(responses.GET, 'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,+nsw+2090%3b+kurraba+point,+nsw+2089%3b+neutral+bay,+nsw+2089%3b+cremorne,+nsw+2090%3b+cammeray,+nsw+2062/list-1?maxBeds=any',
+        responses.add(responses.GET, 'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,+nsw+2090%3B+kurraba+point,+nsw+2089%3B+neutral+bay,+nsw+2089%3B+cremorne,+nsw+2090%3B+cammeray,+nsw+2062/list-1?maxBeds=any',
                       body=sample, status=200,
                       content_type='text/html')
         results = scraper.scrape(2)
