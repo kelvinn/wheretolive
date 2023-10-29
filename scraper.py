@@ -191,6 +191,7 @@ def save(enriched):
         return False
 
 
+@monitor(monitor_slug='daily-crawl')
 def crawl():
     scraped_records = scrape()
     enriched = enrich_records(scraped_records)
