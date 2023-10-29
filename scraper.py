@@ -191,9 +191,8 @@ def save(enriched):
         return False
 
 
-def crawl(event, context):
+def crawl():
     scraped_records = scrape()
-    print(scraped_records)
     enriched = enrich_records(scraped_records)
     save(enriched)
     filtered = list(filter_alerts(enriched))
@@ -207,5 +206,5 @@ if __name__ == '__main__':
 
     if not Association.__table__.exists(engine):
         Association.__table__.create(engine)
-    # crawl(None, None)
+    crawl()
     print("running")
