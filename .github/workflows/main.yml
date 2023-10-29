@@ -33,5 +33,11 @@ jobs:
           fly version
           fly auth docker
           bash scripts/deploy.sh
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
         env:
-          MACHINE_ID: ${{ secrets.MACHINE_ID }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
