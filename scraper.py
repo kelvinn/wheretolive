@@ -18,7 +18,9 @@ SENTRY_DSN = getenv('SENTRY_DSN')
 
 sentry_sdk.init(
     dsn=SENTRY_DSN,
-
+    
+    max_breadcrumbs=50,
+    debug=True,
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
@@ -50,7 +52,7 @@ def scrape(num_pages=30):
         
         # Loop through first 20 pages each day and add results to dataframe at completion.
         for count in range(1, num_pages):
-
+            print(f'Analysing page {count}')
             countstr = str(count)
 
             page_link = f'https://www.realestate.com.au/buy/with-2-bedrooms-between-0-1500000-in-cremorne+point,' \
@@ -195,6 +197,7 @@ def save(enriched):
 
 @monitor(monitor_slug='daily-crawl')
 def crawl():
+    print("Starting crawler")
     scraped_records = scrape()
     enriched = enrich_records(scraped_records)
     save(enriched)
@@ -210,4 +213,4 @@ if __name__ == '__main__':
     if not Association.__table__.exists(engine):
         Association.__table__.create(engine)
     crawl()
-    print("Running scraper...")
+    print("Done.")
