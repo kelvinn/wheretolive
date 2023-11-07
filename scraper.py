@@ -35,6 +35,8 @@ session = Session()
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
 REA_COOKIE = getenv('REA_COOKIE', None)
 
+
+@monitor(monitor_slug='daily-scrape-ab')
 def scrape(num_pages=30):
     # Set variables.
     addresses = []
