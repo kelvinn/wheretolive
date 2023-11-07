@@ -208,4 +208,4 @@ if __name__ == '__main__':
     if not Association.__table__.exists(engine):
         Association.__table__.create(engine)
     crawl()
-    print("running")
+    print("Running scraper...")
